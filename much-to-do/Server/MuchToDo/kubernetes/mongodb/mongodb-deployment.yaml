@@ -29,6 +29,9 @@ spec:
                 secretKeyRef:
                   name: mongodb-secret
                   key: mongo-root-password
+          envFrom:
+            - configMapRef:
+                name: mongodb-config
           volumeMounts:
             - name: mongo-storage
               mountPath: /data/db
@@ -36,4 +39,3 @@ spec:
         - name: mongo-storage
           persistentVolumeClaim:
             claimName: mongodb-pvc
-

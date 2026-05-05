@@ -15,3 +15,11 @@ services:
       MONGO_URI: mongodb://root:example@mongodb:27017/?authSource=admin
     depends_on:
       - mongodb
+
+volumes:
+  mongo-data:
+
+services:
+  mongodb:
+    volumes:
+      - mongo-data:/data/db
