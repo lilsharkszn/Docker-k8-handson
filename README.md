@@ -4,21 +4,21 @@ This project demonstrates a complete end-to-end DevOps workflow for containerizi
 The system is built around the MuchToDo Backend API, a Go-based service, and showcases how to move from local development to a fully orchestrated Kubernetes environment. 
 
 ## This repository highlights real-world DevOps practices including:
-[  ] Infrastructure provisioning
-[  ] Environment configuration
-[  ] Containerization
-[  ] Multi-service orchestration
-[  ] Kubernetes deployment
-[  ] Debugging and system validation 
+- Infrastructure provisioning
+- Environment cconfiguration
+- Containerization
+- Multi-service orchestration
+- Kubernetes deployment
+- Debugging and system validation 
 
 ## What This Project Achieves
-[  ] Containerizes a production-ready backend using Docker
-[  ] Runs supporting services (MongoDB, Redis) via Docker Compose
-[  ] Deploys the full system into Kubernetes (KIND cluster)
-[  ] Configures persistent storage for MongoDB
-[  ] Exposes services using Kubernetes Service and Ingress
-[  ] Validates application health via API endpoints
-[  ] Automates environment setup using Ansible
+- Containerizes a production-ready backend using Docker
+- Runs supporting services (MongoDB, Redis) via Docker Compose
+- Deploys the full system into Kubernetes (KIND cluster)
+- Configures persistent storage for MongoDB
+- Exposes services using Kubernetes Service and Ingress
+-  Validates application health via API endpoints
+- Automates environment setup using Ansible
 --- 
 
 ## Architecture 
