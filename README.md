@@ -23,7 +23,8 @@ The system is built around the MuchToDo Backend API, a Go-based service, and sho
 
 ## Architecture 
 
-Client (curl / browser)
+Client 
+(curl / browser)
         ↓
 NGINX Ingress Controller
         ↓
@@ -37,81 +38,108 @@ MongoDB Pod (Database)
 
 ## Tech Stack 
 
-- Core DevOps Stack
-AWS
-Terraform
-Ansible
-Docker
-Kubernetes (KIND) 
+Core Stack
+- AWS
+- Terraform
+- Ansible
+- Docker
+- Kubernetes (KIND) 
 
-- Backend Stack
-Go (Gin)
-MongoDB
-Redis 
+Backend Stack
+- Go (Gin)
+- MongoDB
+- Redis 
 
-- Tooling
-Git
-Curl 
+Tooling
+- Git
+- Curl 
 
-- NGINX Ingress Controller 
+NGINX Ingress Controller 
 
 --- 
 
 ## Project Structure 
 
 Docker-k8-handson/
-├── ansible/
+.
+├── README.md
+├── ansible
 │   └── setup.yml
-├── infra/
+├── evidence
+│   └── muchToDo-evidence.pdf
+├── infra
 │   ├── main.tf
-│   ├── provider.tf
-│   ├── variables.tf
+│   ├── modules
+│   │   ├── ec2
+│   │   │   ├── main.tf
+│   │   │   ├── outputs.tf
+│   │   │   └── variables.tf
+│   │   ├── security-group
+│   │   │   ├── main.tf
+│   │   │   ├── output.tf
+│   │   │   ├── outputs.tf
+│   │   │   └── variables.tf
+│   │   └── vpc
+│   │       ├── main.tf
+│   │       ├── outputs.tf
+│   │       └── variables.tf
 │   ├── outputs.tf
-│   └── modules/
-│       ├── ec2/
-│       ├── security-group/
-│       └── vpc/
-├── evidence/
-│       └── muchToDo-evidence.pdf
-└── much-to-do/
-    └── Server/
-        └── MuchToDo/
-            ├── Dockerfile
-            ├── Makefile
-            ├── docker-compose.yaml
-            ├── go.mod
-            ├── go.sum
-            ├── cmd/
-            │   └── api/
-            │       └── main.go
-            ├── docs/
-            │   ├── docs.go
-            │   ├── swagger.json
-            │   └── swagger.yaml
-            ├── internal/
-            │   ├── auth/
-            │   ├── cache/
-            │   ├── config/
-            │   ├── database/
-            │   ├── handlers/
-            │   ├── logger/
-            │   ├── middleware/
-            │   ├── models/
-            │   └── routes/
-            └── kubernetes/
-                ├── namespace.yaml
-                ├── ingress.yaml
-                ├── backend/
-                │   ├── backend-configmap.yaml
-                │   ├── backend-deployment.yaml
-                │   ├── backend-secret.yaml
-                │   └── backend-service.yaml
-                └── mongodb/
-                    ├── mongodb-deployment.yaml
-                    ├── mongodb-pvc.yaml
-                    ├── mongodb-secret.yaml
-                    └── mongodb-service.yaml
---- 
+│   ├── provider.tf
+│   └── variables.tf
+└── much-to-do
+    └── Server
+        └── MuchToDo
+            ├── Dockerfile
+            ├── Makefile
+            ├── cmd
+            │   └── api
+            │       └── main.go
+            ├── docker-compose.yaml
+            ├── docs
+            │   ├── docs.go
+            │   ├── swagger.json
+            │   └── swagger.yaml
+            ├── go.mod
+            ├── go.sum
+            ├── internal
+            │   ├── auth
+            │   │   ├── auth.go
+            │   │   └── auth_test.go
+            │   ├── cache
+            │   │   └── cache.go
+            │   ├── config
+            │   │   └── config.go
+            │   ├── database
+            │   │   └── database.go
+            │   ├── handlers
+            │   │   ├── handlers_test.go
+            │   │   ├── handlers_test.go.cp
+            │   │   ├── health.go
+            │   │   ├── todo.go
+            │   │   └── user.go
+            │   ├── logger
+            │   │   └── logger.go
+            │   ├── middleware
+            │   │   ├── logger.go
+            │   │   └── middleware.go
+            │   ├── models
+            │   │   ├── todo.go
+            │   │   └── user.go
+            │   └── routes
+            │       └── routes.go
+            └── kubernetes
+                ├── backend
+                │   ├── backend configmap.yaml
+                │   ├── backend-deployment.yaml
+                │   ├── backend-secret.yaml
+                │   └── backend-service.yaml
+                ├── ingress.yaml
+                ├── mongodb
+                │   ├── mongodb-deployment.yaml
+                │   ├── mongodb-pvc.yaml
+                │   ├── mongodb-secret.yaml
+                │   └── mongodb-service.yaml
+                └── namespace.yaml--- 
 
 ## Docker Setup 
 
@@ -195,13 +223,12 @@ evidence/
 --- 
 
 ## Status 
-
-✔ Backend containerized  
-✔ MongoDB integrated  
-✔ Docker Compose working  
-✔ Kubernetes deployment successful  
-✔ Ingress configured and tested  
-✔ End-to-end API communication verified  
+✔Backend containerized  
+✔MongoDB integrated  
+✔Docker Compose working  
+✔Kubernetes deployment successful  
+✔Ingress configured and tested  
+✔End-to-end API communication verified  
 
 --- 
 
