@@ -1,0 +1,54 @@
+# =====================
+# SECRETS
+# =====================
+*.pem
+*.key
+*.crt
+*.env
+.env*
+secrets/
+*.tfvars
+
+# =====================
+# TERRAFORM (CRITICAL FIX)
+# =====================
+infra/.terraform/
+infra/.terraform/**
+**/.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfstate*
+crash.log
+
+# =====================
+# ANSIBLE
+# =====================
+ansible/*.retry
+
+# =====================
+# GO BUILD OUTPUT
+# =====================
+**/bin/
+**/dist/
+**/*.exe
+**/*.out
+**/*.test
+
+# =====================
+# DOCKER
+# =====================
+docker-compose.override.yml
+
+# =====================
+# ARCHIVES
+# =====================
+*.tar.gz
+*.zip
+
+# =====================
+# IDE / SYSTEM
+# =====================
+.vscode/
+.idea/
+.DS_Storey
+

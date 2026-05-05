@@ -1,0 +1,137 @@
+---
+- name: Provision Backend Environment (Kali Safe)
+  hosts: localhost
+  connection: local
+  become: true
+
+
+  vars:
+    swap_file_size: 2G
+    project_dir: /home/kali/much-to-do
+
+  tasks:
+
+    # -------------------------
+    # FIX DOCKER REPO ISSUE (KALI SPECIFIC)
+    # -------------------------
+    - name: Remove broken Docker repo if present
+      file:
+        path: /etc/apt/sources.list.d/docker.list
+        state: absent
+
+    - name: Prevent Docker repo from being re-added
+      copy:
+        dest: /etc/apt/preferences.d/no-docker
+        content: |
+          Package: *
+          Pin: origin download.docker.com
+          Pin-Priority: -1
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    # -------------------------
+    # INSTALL SYSTEM DEPENDENCIES
+    # -------------------------
+    - name: Install required packages
+      apt:
+        name:
+          - docker.io
+          - docker-compose
+          - git
+          - curl
+        state: present
+
+    # -------------------------
+    # ENABLE DOCKER
+    # -------------------------
+    - name: Enable and start Docker
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add kali user to docker group
+      user:
+        name: kali
+        groups: docker
+        append: yes
+
+    # -------------------------
+    # SWAP (CRITICAL FOR BUILDS)
+    # -------------------------
+    - name: Check if swapfile exists
+      stat:
+        path: /swapfile
+      register: swapfile
+
+    - name: Create swap file
+      command: fallocate -l {{ swap_file_size }} /swapfile
+      when: not swapfile.stat.exists
+
+    - name: Set swap permissions
+      file:
+        path: /swapfile
+        mode: '0600'
+      when: not swapfile.stat.exists
+
+    - name: Format swap
+      command: mkswap /swapfile
+      when: not swapfile.stat.exists
+
+    - name: Enable swap
+      command: swapon /swapfile
+      when: not swapfile.stat.exists
+
+    - name: Persist swap in fstab
+      lineinfile:
+        path: /etc/fstab
+        line: "/swapfile none swap sw 0 0"
+        state: present
+
+    # -------------------------
+    # PROJECT DIRECTORY SETUP
+    # -------------------------
+    - name: Ensure project directory exists
+      file:
+        path: "{{ project_dir }}"
+        state: directory
+        owner: kali
+        group: kali
+        mode: '0755'
+
+    - name: Fix home directory permissions
+      file:
+        path: /home/kali
+        owner: kali
+        group: kali
+        recurse: yes
+
+    # -------------------------
+    # VERIFY INSTALLATION
+    # -------------------------
+    - name: Check Docker version
+      command: docker --version
+      register: docker_version
+
+    - name: Show Docker version
+      debug:
+        var: docker_version.stdout
+
+    - name: Check Docker Compose version
+      command: docker compose version
+      register: compose_version
+      ignore_errors: yes
+
+    - name: Show Docker Compose version
+      debug:
+        var: compose_version.stdout
+
+    - name: Check swap status
+      command: free -h
+      register: swap_status
+
+    - name: Show memory + swap
+      debug:
+        var: swap_status.stdout
